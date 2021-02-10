@@ -1,23 +1,13 @@
-resource "google_dns_managed_zone" "apa" {
-  name     = "apa"
-  dns_name = "apa.com."
+data "google_dns_managed_zone" "root" {
+  name = "lonnblad"
+}
 
-  dnssec_config {
-    kind          = "dns#managedZoneDnsSecConfig"
-    non_existence = "nsec3"
-    state         = "on"
+resource "google_dns_record_set" "developer" {
+  name = "developer.${data.google_dns_managed_zone.root.dns_name}"
+  type = "TXT"
+  ttl  = 300
 
-    default_key_specs {
-      algorithm  = "rsasha256"
-      key_length = 2048
-      key_type   = "keySigning"
-      kind       = "dns#dnsKeySpec"
-    }
-    default_key_specs {
-      algorithm  = "rsasha256"
-      key_length = 1024
-      key_type   = "zoneSigning"
-      kind       = "dns#dnsKeySpec"
-    }
-  }
+  managed_zone = data.google_dns_managed_zone.root.name
+
+  rrdatas = ["test"]
 }
