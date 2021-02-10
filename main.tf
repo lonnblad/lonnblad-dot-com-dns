@@ -22,6 +22,6 @@ variable "google_credentials" {
 // Configure the Google Cloud provider
 provider "google" {
   credentials = var.google_credentials
-  project     = "core"
+  project     = "upspin-169320"
   region      = "europe-west1"
 }

@@ -1,13 +1,23 @@
-data "google_dns_managed_zone" "root" {
-  name = "lonnblad"
-}
+resource "google_dns_managed_zone" "root" {
+  name     = "lonnblad"
+  dns_name = "lonnblad.com."
 
-resource "google_dns_record_set" "developer" {
-  name = "developer.${data.google_dns_managed_zone.root.dns_name}"
-  type = "TXT"
-  ttl  = 300
+  dnssec_config {
+    kind          = "dns#managedZoneDnsSecConfig"
+    non_existence = "nsec3"
+    state         = "on"
 
-  managed_zone = data.google_dns_managed_zone.root.name
-
-  rrdatas = ["test"]
+    default_key_specs {
+      algorithm  = "rsasha256"
+      key_length = 2048
+      key_type   = "keySigning"
+      kind       = "dns#dnsKeySpec"
+    }
+    default_key_specs {
+      algorithm  = "rsasha256"
+      key_length = 1024
+      key_type   = "zoneSigning"
+      kind       = "dns#dnsKeySpec"
+    }
+  }
 }
