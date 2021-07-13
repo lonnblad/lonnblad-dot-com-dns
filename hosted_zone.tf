@@ -29,7 +29,7 @@ resource "google_dns_record_set" "email" {
   type         = "MX"
   ttl          = 300
 
-  rrdatas      = [
+  rrdatas = [
     "1 aspmx.l.google.com.",
     "5 alt1.aspmx.l.google.com.",
     "5 alt2.aspmx.l.google.com.",
